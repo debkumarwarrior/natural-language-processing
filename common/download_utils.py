@@ -10,6 +10,9 @@ REPOSITORY_PATH = "https://github.com/hse-aml/natural-language-processing"
 
 
 def download_file(url, file_path):
+    if os.path.exists('.'.join(file_path.split('.')[:-2])):
+        print("File {} is already downloaded.".format(file_path))
+        return
     r = requests.get(url, stream=True)
     total_size = int(r.headers.get('content-length'))
     try:
@@ -84,7 +87,7 @@ def download_week3_resources(force=False):
     )
     print("Downloading GoogleNews-vectors-negative300.bin.gz (1.5G) for you, it will take a while...")
     download_file("https://s3.amazonaws.com/dl4j-distribution/GoogleNews-vectors-negative300.bin.gz",
-                  "GoogleNews-vectors-negative300.bin.gz")
+                  "data/GoogleNews-vectors-negative300.bin.gz")
 
 
 def download_project_resources(force=False):

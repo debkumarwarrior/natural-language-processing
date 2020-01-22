@@ -49,12 +49,16 @@ def load_embeddings(embeddings_path):
     ########################
     #### YOUR CODE HERE ####
     ########################
-
-    # remove this when you're done
-    raise NotImplementedError(
-        "Open utils.py and fill with your code. In case of Google Colab, download"
-        "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+    starspace_embeddings = {} ######### YOUR CODE HERE #############
+    with open(embeddings_path, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.split('\t')
+            word = line[0]
+            embedding = line[1:]
+            embeddings_dim = len(embedding)
+            starspace_embeddings[word] = np.array(embedding).astype(np.float32)
+    return starspace_embeddings,embeddings_dim
 
 
 def question_to_vec(question, embeddings, dim):
@@ -65,12 +69,14 @@ def question_to_vec(question, embeddings, dim):
     ########################
     #### YOUR CODE HERE ####
     ########################
-
-    # remove this when you're done
-    raise NotImplementedError(
-        "Open utils.py and fill with your code. In case of Google Colab, download"
-        "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+    result = np.zeros(dim,dtype=np.float32)
+    length = 0
+    for s in question.strip().split():
+        if s in embeddings:
+            result = result + embeddings[s]
+            length += 1
+    result = result/np.max([1,length])
+    return result    
 
 
 def unpickle_file(filename):
